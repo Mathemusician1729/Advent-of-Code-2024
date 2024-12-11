@@ -1,23 +1,22 @@
-# Question 1
-aoc1 = open("H:\\manims\\aoc1.txt", "r") # Must open directory directly from files "use \\ to specify subfolders"
-list1 = [] # from list 1
-list2 = [] # from list 2
+# file read line for all problems:
+# aoc1 = open("H:\\Pytons\\Advent-of-Code-2024\\[FILENAME].txt", "r")
 
-# for loop for each line of aoc1
-for line in aoc1: 
-    entry = line.split() # split values as array (vals[0] is num in first list, vals[1] is num in 2nd list)
+# Question 2
+aoc1 = open("H:\\Pytons\\Advent-of-Code-2024\\input.txt", "r") # file reading
+safe_reports = 0 # tracks # of safe reports
 
-    list1.append(int(entry[0])) # add all first entries into first list
-    list2.append(int(entry[1])) # add all second entries into 2nd list
-
-# sort lists
-list1.sort()
-list2.sort()
-
-# calculate distance
-dist = 0
-for i in range(0, len(list1)): # loop through lists
-    diff = abs(list1[i] - list2[i]) # take positive difference between lists
-    dist += diff # add to sum --> total distance
-
-print(dist)
+for line in aoc1: # loop through each possible report
+    report = line.split() # turn into array 
+    report = [int(x) for x in report] # list comprehension (turns all vals into integer)
+    if all(report[i] < report[i+1] for i in range(len(report)-1)) or all(report[i] > report[i+1] for i in range(len(report)-1)): # check if all increasing/decreasing
+        valid_diff = True # flag that checks if the difference is between 1 and 3
+        for i in range(0, len(report)-1): # check if difference between values is between 1 and 3 
+            diff = abs(report[i+1] - report[i]) # take difference
+            if diff < 1 or diff > 3: # if not valid, set flag to false and end loop for that report
+                valid_diff = False
+                break
+        
+        if valid_diff == True: # only add if no invalid differences
+            safe_reports+=1
+        
+print(safe_reports)
